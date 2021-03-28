@@ -4,56 +4,62 @@ const db = require('../models')
 module.exports = (app) => {
 
   // Get route for retrieving all workouts
-  app.get('/api/workouts', (req, res) => {
-    db.Workouts.find({}).then((dbWorkouts) => res.json(dbWorkouts))
-  })
+    app.get('/api/workouts', (req, res) => {
+        db.Workout.find({}).then(dbWorkouts => {
+            dbWorkouts.forEach(workout => {
+                let total = 0
+                workout.exercises.forEach(e => {
+                    total += e.duration
+                }
+                )
+                workout.totalDuration = total
+            })
+            res.json(dbWorkouts)
+        }) 
+    })
 
-//   // Get route for returning posts of a specific category
-//   app.get('/api/posts/category/:category', (req, res) => {
-//     // Add sequelize code to find all posts where the category is equal to req.params.category,
-//     // Return the result to the user with res.json
-//     db.Workouts.findAll({
+  // Get route for returning workouts of a specific range
+  app.get('/api/workouts/range', (req, res) => {
+    db.Workout.find({}).then(dbWorkouts => {
+        res.json(dbWorkouts)
+    })
+  })
+    
+    
+//     ({
 //       where: {
 //         category: req.params.category,
 //       }
 //     }).then((dbWorkouts) => res.json(dbWorkouts))
-//   });
-
-//   // Get route for retrieving a single post
-//   app.get('/api/workouts/:id', (req, res) => {
-//     // Add sequelize code to find a single post where the id is equal to req.params.id,
-//     // return the result to the user with res.json
-//     db.Post.find({
-//       where: {
-//         id: req.params.id
-//       }
-//     }).then((dbWorkouts) => res.json(dbWorkouts))
-//   });
-
-  // Create a new workout
-  app.post('/api/workouts', (req, res) => {
-    db.Workouts.create(req.body).then((dbWorkouts) => res.json(dbWorkouts))
-  })
-
-//   // Delete a workout
-//   app.delete('/api/workouts/:id', (req, res) => {
-//     db.Post.destroy({
-//       where: {
-//         id: req.params.id
-//       }
-    // }).then((dbWorkouts) => res.json(dbWorkouts))
 //   })
 
-  // PUT route for updating posts
-  app.put('/api/posts/:id', (req, res) => {
-    // Add code here to update a post using the values in req.body, where the id is equal to
-    // req.body.id and return the result to the user using res.json
-    db.Post.update(req.body,
-    {
-      where: {
-        id: req.body.id
-      }
-    }
-  ).then((dbWorkouts) => res.json(dbWorkouts))
-  })
+//  Create a new workout
+    app.post('/api/workouts', ({ body }, res) => {
+        db.Workout.create(body).then((dbWorkouts) => {
+            res.json(dbWorkouts)
+        })
+    })
+
+  // Updating posts
+    app.put('/api/workouts/:id', (req, res) => {
+        db.Workout.findOneAndUpdate({
+            _id: req.params.id
+        },
+        {
+            $inc: { totalDuration: req.body.duration },
+            $push: { exercises: req.body }
+        },
+        { new: true }
+        ).then((dbWorkouts) => res.json(dbWorkouts))
+    })
+
+  // Delete a workout
+    app.delete('/api/workouts/:id', (req, res) => {
+        db.Workout.destroy({
+            where: 
+            {
+                _id: req.params.id
+            }
+        }).then((dbWorkouts) => res.json(dbWorkouts))
+    })
 }
