@@ -6,15 +6,37 @@ const WorkoutSchema = new Schema({
     exercises: [{
         type: {
             type: String,
-            enum: ['Resistance', 'Cardio']
+            enum: ['Resistance', 'Cardio'],
+            trim: true
         },
-        name: String,
-        duration: Number,
-        weight: Number,
-        reps: Number,
-        sets: Number,
-        distance: Number,
-        duration: Number
+        name: {
+            type: String,
+            trim: true
+        },
+        duration: {
+            type: Number,
+            trim: true
+        },
+        weight: {
+            type: Number,
+            trim: true
+        },
+        reps: {
+            type: Number,
+            trim: true
+        },
+        sets: {
+            type: Number,
+            trim: true
+        },
+        distance: {
+            type: Number,
+            trim: true
+        },
+        duration: {
+            type: Number,
+            trim: true
+        },
     }]
 });
 

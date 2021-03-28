@@ -1,61 +1,59 @@
-module.exports = function(app) {
+const db = require('../models')
 
-    app.post("/", function(req, res) {
-        res.json(req)
-    })
+// Routes
+module.exports = (app) => {
 
-    // db.User.create({ name: "Ernest Hemingway" })
-//   .then(dbUser => {
-//     console.log(dbUser);
-//   })
-//   .catch(({ message }) => {
-//     console.log(message);
+  // Get route for retrieving all workouts
+  app.get('/api/workouts', (req, res) => {
+    db.Workouts.find({}).then((dbWorkouts) => res.json(dbWorkouts))
+  })
+
+//   // Get route for returning posts of a specific category
+//   app.get('/api/posts/category/:category', (req, res) => {
+//     // Add sequelize code to find all posts where the category is equal to req.params.category,
+//     // Return the result to the user with res.json
+//     db.Workouts.findAll({
+//       where: {
+//         category: req.params.category,
+//       }
+//     }).then((dbWorkouts) => res.json(dbWorkouts))
 //   });
 
-// app.get("/notes", (req, res) => {
-//   db.Note.find({})
-//     .then(dbNote => {
-//       res.json(dbNote);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
+//   // Get route for retrieving a single post
+//   app.get('/api/workouts/:id', (req, res) => {
+//     // Add sequelize code to find a single post where the id is equal to req.params.id,
+//     // return the result to the user with res.json
+//     db.Post.find({
+//       where: {
+//         id: req.params.id
+//       }
+//     }).then((dbWorkouts) => res.json(dbWorkouts))
+//   });
 
-// app.get("/user", (req, res) => {
-//   db.User.find({})
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
+  // Create a new workout
+  app.post('/api/workouts', (req, res) => {
+    db.Workouts.create(req.body).then((dbWorkouts) => res.json(dbWorkouts))
+  })
 
-// app.post("/submit", ({ body }, res) => {
-//   db.Note.create(body)
-//     .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { notes: _id } }, { new: true }))
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
+//   // Delete a workout
+//   app.delete('/api/workouts/:id', (req, res) => {
+//     db.Post.destroy({
+//       where: {
+//         id: req.params.id
+//       }
+    // }).then((dbWorkouts) => res.json(dbWorkouts))
+//   })
 
-// app.get("/populateduser", (req, res) => {
-//   // TODO
-//   // =====
-//   // Write the query to grab the documents from the User collection,
-//   // and populate them with any associated Notes.
-//   // TIP: Check the models out to see how the Notes refers to the User
-//   db.User.find({})
-//     .populate("notes")
-//     .then(dbUser => {
-//       res.json(dbUser)
-//     })
-//     .catch(err => {
-//       res.json(err)
-//     })
-// });
+  // PUT route for updating posts
+  app.put('/api/posts/:id', (req, res) => {
+    // Add code here to update a post using the values in req.body, where the id is equal to
+    // req.body.id and return the result to the user using res.json
+    db.Post.update(req.body,
+    {
+      where: {
+        id: req.body.id
+      }
+    }
+  ).then((dbWorkouts) => res.json(dbWorkouts))
+  })
 }
