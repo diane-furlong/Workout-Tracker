@@ -18,7 +18,7 @@ module.exports = (app) => {
         }) 
     })
 
-  // Get route for returning workouts of a specific range
+  // Get route for returning workouts of a range
   app.get('/api/workouts/range', (req, res) => {
     db.Workout.find({}).then(dbWorkouts => {
         res.json(dbWorkouts)
