@@ -33,7 +33,15 @@ If running application locally, this requires "npm i" in the command terminal to
 The deployed application can be found here: https://workouttracker5000.herokuapp.com/
 
 Homepage:
-![screenshot](./public/assets/screenshot/SS-workouttracker.jpg)
+![screenshot](./public/assets/workouttracker.jpg)
+
+
+Adding workout:
+![screenshot](./public/assets/workouttracker_add.jpg)
+
+
+Dashboard
+![screenshot](./public/assets/workouttracker_dashboard2.jpg)
 
     
 ## Contributions
